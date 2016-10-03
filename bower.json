@@ -3,12 +3,9 @@
   "description": "an web app for monitoring weather",
   "main": "index.html",
   "keywords": [
-    "weather",
-    "app",
-    "angularjs",
-    "app",
-    "jquery",
-    "app"
+    "weather app",
+    "angularjs app",
+    "jquery weather app"
   ],
   "authors": [
     "Akshay Bordoloi"
