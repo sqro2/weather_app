@@ -1,0 +1,29 @@
+{
+  "name": "weather_app",
+  "description": "an web app for monitoring weather",
+  "main": "index.html",
+  "keywords": [
+    "weather",
+    "app",
+    "angularjs",
+    "app",
+    "jquery",
+    "app"
+  ],
+  "authors": [
+    "Akshay Bordoloi"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/sqro2/weather_app",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.8",
+    "bootstrap": "^3.3.7"
+  }
+}

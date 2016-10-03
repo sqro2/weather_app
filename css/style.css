@@ -1,0 +1,67 @@
+*{
+   font-family:arial,sans-serif;	
+   color:#3a3737;
+}
+body #doc_header{
+	border-bottom:2px solid #dfdfdf;
+}
+body #preloader{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	left:0px;
+	background-image:url(../assets/img/trans_back.png);
+	background-repeat:repeat;
+	z-index:1000;
+	display:none;
+}
+body #notification{
+	margin-top:2.455vw;
+}
+body #preloader .status{
+	margin-top:49vh;
+	margin-left:49vw;
+}
+body #article{
+	display:none;
+	margin:2.155vw 0vw;
+}
+ body #article #sub-heading-left,#sub-heading-left{
+    color:#286090;
+	 }
+ body #article #sub-heading-left .geo-loc{
+	color:#4e966f; 
+	 }
+body #city-input{
+	width:80%;
+	float:left;
+	border-radius:0px;
+}
+body #btn-sub{
+	width:20%;
+	float:left;
+	border-radius:0px;
+}
+body .timestamp{
+	font-size:14px;
+	color:#c1631f;
+	font-weight:bold;
+}
+body .descrption{
+	font-size:18px;
+	color:#bf4820;
+}
+body .w-chart{
+	margin-top:2.22vw;
+}
+body .page-header #page-heading{
+	font-size:33px;
+	color:#586f9e;
+}
+body .stat-col-left .quick-info span strong{
+    font-size:16px;
+}
+body #stat-tab-lft,#stat-tab-rgt{
+	margin:1.525vw 0vw;
+}
