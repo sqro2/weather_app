@@ -1,7 +1,7 @@
 angular.module('weatherStat',[])
   .service('loader',function(){
 	     this.start = function(){
-			     $('#preloader').show();
+			     $('#preloader').show(); 
 			 };
 		 this.end = function(){
 			     $('#preloader').hide();
@@ -11,14 +11,14 @@ angular.module('weatherStat',[])
 			     $('#article').hide();
 			 }
 	  })
-  .service('converter',function(){
+  .service('helper',function(){
 	      this.to_deg_cel = function(temp){
 			    return Math.floor(temp-273.15); 
 			  };
 	      this.cloudiness = function(okta){
-			      if(okta >=0 && okta<=1){
-					     return 'Clear Blue Sky, no clouds';
-					   }else if(okta >=1 && okta<=2){
+			      if(okta ==0){
+					     return 'Sky is overall clear, not much clouds';
+					   }else if(okta >=0 && okta<=2){
 					     return 'Sky is partially cloudy';
 					   }else if(okta >=2 && okta<=3){
 					     return 'Sky is cloudy';
@@ -36,14 +36,12 @@ angular.module('weatherStat',[])
 			  };
 			 this.time = function(t_unix,controller){
 				      var date = new Date(t_unix*1000);
-					  var ampm = date.getHours() >= 12 ? 'pm' : 'am';
-					  var t_formatted = date.getHours()+':'+date.getMinutes();
-					  var dt_formatted = date.getDate()+'/'+date.getMonth()+'/'+date.getYear()+' at '+t_formatted;
+					  
 					  if(controller==='t'){
-						   return t_formatted+' '+ampm;
+						   return date.toLocaleTimeString();
 						  }
 					  if(controller==='dt'){
-						    return dt_formatted+' '+ampm;
+						   return date.toLocaleDateString()+' at '+date.toLocaleTimeString();
 						  }
 				 };
 			 this.to_compass = function(deg){
@@ -61,9 +59,30 @@ angular.module('weatherStat',[])
 								  u_c_str = u_c_str+w_array_new.join('')+' ';
 						  }
 				      return u_c_str;
+				 };
+			 this.get_current = function(obj,name){
+						if ($.isEmptyObject(obj))
+						{
+						   return 'No data received';
+						}else{
+						     if(name == 'rain'){
+									for(var key in obj){
+										  var r_string = obj[key]+' ('+key+')';
+										}	
+									  return r_string;
+							   }
+								     
+	                         if(name == 'snow'){
+									for(var key in obj){
+										  var s_string = obj[key]+' ('+key+')';
+										}								 
+								      return s_string;
+								 }
+						}
+				 
 				 }
 	  })
-  .controller('getStat',['$http','$scope','converter','loader',function($http,$scope,converter,loader){
+  .controller('getStat',['$http','$scope','helper','loader',function($http,$scope,helper,loader){
 		var stat = {
 			     init : function(location){
 				             var api_key = '022f2051439d85060ddd9c4a30bad6fa';
@@ -80,26 +99,25 @@ angular.module('weatherStat',[])
 					 },
 			     get_render : function(query_str){
 						          $http.get(query_str).success(function(w){
-								    console.log(w);
 								    if(w.cod!=='404'){
 											$scope.city_name = w.name;
 											$scope.country_name = w.sys.country;
 											$scope.w_icon_url = 'http://openweathermap.org/img/w/'+w.weather[0].icon+'.png';
-											$scope.dt = converter.time(w.dt,'dt');
-											$scope.description = converter.upper_cased(w.weather[0].description);
-											$scope.temp = converter.to_deg_cel(w.main.temp);
-											$scope.temp_max = converter.to_deg_cel(w.main.temp_max);
-											$scope.temp_min = converter.to_deg_cel(w.main.temp_min);
+											$scope.dt = helper.time(w.dt,'dt');
+											$scope.description = helper.upper_cased(w.weather[0].description);
+											$scope.temp = helper.to_deg_cel(w.main.temp);
+											$scope.temp_max = helper.to_deg_cel(w.main.temp_max);
+											$scope.temp_min = helper.to_deg_cel(w.main.temp_min);
 											$scope.wind_speed =  w.wind.speed+'m/s';
 											$scope.wind_dir_deg =  w.wind.deg;
-											$scope.wind_dir =  converter.to_compass(w.wind.deg);
-											$scope.cloudiness =converter.cloudiness((w.clouds.all)/10);
-											$scope.rain = (w.rain)? w.rain['3h'] : 'No rain';
-											$scope.snow = (w.snow)? w.snow['3h'] : 'No snow';
+											$scope.wind_dir =  helper.to_compass(w.wind.deg);
+											$scope.cloudiness =helper.cloudiness((w.clouds.all)/10);
+											$scope.rain = (w.rain)? helper.get_current(w.rain,'rain') : 'No rain';
+											$scope.snow = (w.snow)? helper.get_current(w.snow,'snow') : 'No snow';
 											$scope.pressure =  w.main.pressure;
 											$scope.humidity =  w.main.humidity;
-											$scope.sunrise =  converter.time(w.sys.sunrise,'t');
-											$scope.sunset =  converter.time(w.sys.sunset,'t');
+											$scope.sunrise =  helper.time(w.sys.sunrise,'t');
+											$scope.sunset =  helper.time(w.sys.sunset,'t');
 											$scope.lat =  w.coord.lat; 
 											$scope.lon =  w.coord.lon; 
 											loader.end();										
