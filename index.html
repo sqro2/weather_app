@@ -27,7 +27,7 @@
 	  <div id='preloader'>
 	     <img class='status' src='assets/gif/status-00.gif' width='22' height='22' alt='preloader'/>
 	  </div>
-	<div class='container' id='main'>
+	<div class='container' id='main' ng-cloak>
 	  <div ng-controller='getStat'>
 		  <div class='row'>
 		     <div class='col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xm-12'>
@@ -39,7 +39,7 @@
 		  </div>
 		  <div class='row' id='notification'>
 		     <div class='col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xm-12'>
-			     <div class='text-center'>
+			     <div class='text-center' ng-class="{'alert alert-warning':type==0,'alert alert-success':type==1,'alert-default':type==2}">
 				    {{ notify }}
 				 </div>
 			 </div>
