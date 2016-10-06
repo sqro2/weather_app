@@ -13,7 +13,6 @@ angular.module('weatherStat',[])
 		 this.refresh_dom = function(){
 			     $('#article').hide();
 			 };
-		console.log(this.end.prototype);
 	  })
   .service('helper',function(){
 	      this.to_deg_cel = function(temp){
