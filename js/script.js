@@ -3,13 +3,17 @@ angular.module('weatherStat',[])
 	     this.start = function(){
 			     $('#preloader').show(); 
 			 };
-		 this.end = function(){
+		 this.end = function(r_d){
 			     $('#preloader').hide();
 				 $('#article').fadeIn();
+				 if(r_d){
+					   this.refresh_dom();
+					 }
 			 };
 		 this.refresh_dom = function(){
 			     $('#article').hide();
-			 }
+			 };
+		console.log(this.end.prototype);
 	  })
   .service('helper',function(){
 	      this.to_deg_cel = function(temp){
@@ -83,6 +87,17 @@ angular.module('weatherStat',[])
 				 }
 	  })
   .controller('getStat',['$http','$scope','helper','loader',function($http,$scope,helper,loader){
+        var notification = {
+			    emit : function(msg,type){
+					    $scope.notify = msg;
+						$scope.type = type;
+					},
+				die : function(){
+					   $scope.notify = '';
+					   $scope.type = 2;
+					}
+			
+		}
 		var stat = {
 			     init : function(location){
 				             var api_key = '022f2051439d85060ddd9c4a30bad6fa';
@@ -120,14 +135,14 @@ angular.module('weatherStat',[])
 											$scope.sunset =  helper.time(w.sys.sunset,'t');
 											$scope.lat =  w.coord.lat; 
 											$scope.lon =  w.coord.lon; 
-											loader.end();										
+											loader.end(0);										
 										}else{
-										     $scope.notify = 'No city found';
-											 loader.end();	
-											 loader.refresh_dom();
+										     notification.emit('No city found',0);
+											 loader.end(1);	
 										}
 								  }).error(function(){
-								     alert('failed');
+								     notification.emit('Could not send request. Please try again!',0);
+									 loader.end(1);
 								  })
 					}
 			  };
@@ -137,7 +152,7 @@ angular.module('weatherStat',[])
 				 },function(error){
 					 if(error.code == error.PERMISSION_DENIED){
 						   $scope.$apply(function(){
-								  $scope.notify = 'Weather Data Will Appear Here..';
+								  notification.emit('Weather Data Will Appear Here..',2);
 							   })
 						 }
 				  });
@@ -146,7 +161,7 @@ angular.module('weatherStat',[])
 								if(($scope.city).length>0){
 									loader.start();
 							        stat.init($scope.city);
-							        $scope.notify = '';
+							        notification.die();
 								}else{
 								    return false;
 								}
