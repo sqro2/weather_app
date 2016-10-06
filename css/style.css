@@ -4,6 +4,7 @@
 }
 body #doc_header{
 	border-bottom:2px solid #dfdfdf;
+	box-shadow:0px 2px 5px #dfdfdf;
 }
 body #preloader{
 	width:100%;
